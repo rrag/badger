@@ -123,8 +123,8 @@ type DB struct {
 
 	pub        *publisher
 	registry   *KeyRegistry
-	blockCache *ristretto.Cache
-	indexCache *ristretto.Cache
+	blockCache *ristretto.Cache[[]byte, interface{}]
+	indexCache *ristretto.Cache[uint64, interface{}]
 	allocPool  *z.AllocatorPool
 }
 
@@ -274,7 +274,7 @@ func Open(opt Options) (*DB, error) {
 			numInCache = 1
 		}
 
-		config := ristretto.Config{
+		config := ristretto.Config[[]byte, interface{}]{
 			NumCounters: numInCache * 8,
 			MaxCost:     opt.BlockCacheSize,
 			BufferItems: 64,
@@ -297,7 +297,7 @@ func Open(opt Options) (*DB, error) {
 			numInCache = 1
 		}
 
-		config := ristretto.Config{
+		config := ristretto.Config[uint64, interface{}]{
 			NumCounters: numInCache * 8,
 			MaxCost:     opt.IndexCacheSize,
 			BufferItems: 64,
