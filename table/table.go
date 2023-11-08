@@ -77,8 +77,8 @@ type Options struct {
 	Compression options.CompressionType
 
 	// Block cache is used to cache decompressed and decrypted blocks.
-	BlockCache *ristretto.Cache
-	IndexCache *ristretto.Cache
+	BlockCache *ristretto.Cache[[]byte, interface{}]
+	IndexCache *ristretto.Cache[uint64, interface{}]
 
 	AllocPool *z.AllocatorPool
 
